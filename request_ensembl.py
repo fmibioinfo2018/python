@@ -27,6 +27,8 @@ def main():
         seq_result = ens_client.request("sequence/id/"+item["gene_stable_id"])
         print(json.loads(seq_result))
     
+    if(false)
+    
     ens_client.close()
     
     
