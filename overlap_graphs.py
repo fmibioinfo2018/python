@@ -8,6 +8,9 @@ facts and functionalities of graphs.
 
 class Graph(object):
 
+    def test:
+        return
+        
     def __init__(self, graph_dict=None):
         """ initializes a graph object 
             If no dictionary or None is given, 
