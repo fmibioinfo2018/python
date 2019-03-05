@@ -3,6 +3,7 @@ CREATE (a:sample) SET a.HER2_STATUS = "-" SET a.HER2_SNP6 = "NEUT" RETURN a
 '''
 
 
+
 def read_csv(file, label):
     f = open(file,'r')
     lines = f.readlines()
