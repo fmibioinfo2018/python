@@ -27,12 +27,10 @@ def main():
     proteins = session.run("MATCH (n:HugoSymbol) RETURN n.name, n.EntrezGeneId LIMIT 25")
     
     for name in proteins:
-        print("by index {}".format(name[0]))
-
-    obj = ens_client.request("/lookup/symbol/homo_sapiens/BRCA2?content-type=application/xml;expand=1")
-    json_res = json.loads(obj)
-
-    id = json_res['id']
+        obj = ens_client.request("/lookup/symbol/homo_sapiens/{}?content-type=application/xml;expand=1".format(name[0]))
+        json_res = json.loads(obj)
+        id = json_res['id']
+        session.run("MATCH (a:HugoSymbol) WHERE a.name = '{}' SET a.ensId='{}'".format(name[0], id))
 
     print(id)
 
