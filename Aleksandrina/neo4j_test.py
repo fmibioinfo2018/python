@@ -1,6 +1,7 @@
 
 from neo4j import GraphDatabase, basic_auth
-import re
+
+from neo4j.v1 import GraphDatabase, basic_auth
 
 class MutationsDB:
     def __init__(self, uri, auth):
@@ -15,11 +16,11 @@ class MutationsDB:
                 records = line.split(',')
                 query = "create (r:{}) ".format(label)
                 for record in records:
-                    key, value = record.split(':')
+                    key, value = record.split(':',1)
                     query += "set r.{} = '{}' ".format(key, value)
                 query += "return r"
                 session.run(query)
-                print(query)
+                #print(query)
         f.close()
 
     def add_relationships_from_file(self, filename, type, from_node, to_node):
@@ -34,9 +35,8 @@ class MutationsDB:
                 second = records[len(records)-1]
                 query = "match (a:{}), (b:{}) where a.name = '{}' and b.name = '{}' create (a)-[r:{}]->(b) ".format(from_node, to_node, first, second, type)
                 for record in records[1:len(records)-1]:
-                    r = record.split(':')
-                    if r[0][0].isdigit():
-                        r[0] = 'x' + r[0]
+                    r = record.split(':',1)
+                    if r[0] == "000": continue
                     if len(r) < 2:
                         r.append(' ')
                     query += "set r.{} = '{}' ".format(r[0], r[1])
@@ -47,13 +47,18 @@ class MutationsDB:
         #print(count)
         f.close()
 
+    def execute_query(self, query):
+        with self.driver.session() as session:
+            res = session.run(query)
+        return res
+
     def close(self):
         self.driver.close()
 
 
+
 if __name__ == "__main__":
-    db = MutationsDB("bolt://34.207.155.255:39042", basic_auth("neo4j", "appropriation-finishes-feeling"))
+    db = MutationsDB("bolt://34.224.2.79:34310", basic_auth("neo4j", "ingredient-vibrations-files"))
     #db.add_nodes_from_file("../nosql/neo4j/test_data/Sample.csv", "Sample")
     #db.add_nodes_from_file("../nosql/neo4j/test_data/HugoSymbol.csv", "HugoSymbol")
-    db.add_relationships_from_file("../nosql/neo4j/test_data/mutation.csv", "mutation", "Sample", "HugoSymbol")
-    db.close()
+    #db.add_relationships_from_file("../nosql/neo4j/test_data/mutation.csv", "mutation", "Sample", "HugoSymbol")
