@@ -51,11 +51,9 @@ class MutationsDB:
         self.driver.close()
 
 
-
 if __name__ == "__main__":
     db = MutationsDB("bolt://34.207.155.255:39042", basic_auth("neo4j", "appropriation-finishes-feeling"))
     #db.add_nodes_from_file("../nosql/neo4j/test_data/Sample.csv", "Sample")
     #db.add_nodes_from_file("../nosql/neo4j/test_data/HugoSymbol.csv", "HugoSymbol")
     db.add_relationships_from_file("../nosql/neo4j/test_data/mutation.csv", "mutation", "Sample", "HugoSymbol")
     db.close()
-    
