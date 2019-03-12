@@ -17,7 +17,7 @@ def relations_read():
             key_value = key.split(":")
             if len(key_value) >= 2:
                 query += " SET r.{} = '{}' ".format(key_value[0].rstrip(), key_value[1].rstrip())
-        query += " RETURUN a "
+        query += " RETURN a "
         yield query
 
 
@@ -36,8 +36,8 @@ def read_csv(file, label):
 
 if __name__ == '__main__':
 #"python/nosql/neo4j/test_data/Sample.csv"
-    read_csv("python/nosql/neo4j/test_data/HugoSymbol.csv", "HugoSymbol")
-    read_csv("python/nosql/neo4j/test_data/Sample.csv", "Sample")
+    #read_csv("python/nosql/neo4j/test_data/HugoSymbol.csv", "HugoSymbol")
+    #read_csv("python/nosql/neo4j/test_data/Sample.csv", "Sample")
     for query in relations_read():
         session.run(query)
 
